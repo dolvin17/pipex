@@ -6,7 +6,7 @@
 #    By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/10 15:04:54 by dolvin17          #+#    #+#              #
-#    Updated: 2023/09/10 20:41:08 by dolvin17         ###   ########.fr        #
+#    Updated: 2023/09/26 20:09:39 by dolvin17         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ MAIN = main.c
 SRCS =	ft_strnstr.c \
 		main.c \
 		ft_strlen.c \
-		ft_split.c
+		ft_split.c \
+		ft_strjoin.c \
+		get_path.c  
 		
 OBJS =  ${SRCS:.c=.o}
 

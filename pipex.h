@@ -6,7 +6,7 @@
 /*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:58:50 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/10 20:41:31 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/26 20:03:28 by dolvin17         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@
 #include <stdbool.h>
 #include <fcntl.h>
 
-int main(void);
+int main();
 size_t ft_strlen(const char *str);
 char *ft_strnstr(const char *haystack, const char *needle, size_t len);
 char **ft_split(char const *s, char c);
-
+char *ft_strjoin(char const *str_1, char const *str_2);
+char *get_path(char *command, char **environ);
 #endif
