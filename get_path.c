@@ -6,7 +6,7 @@
 /*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 18:41:16 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/26 21:39:55 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/27 20:22:25 by dolvin17         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ char *get_path(char *command, char **environ)
 			while (paths[j] != NULL)
 			{
 				partial_path = ft_strjoin(paths[j], "/");
-				printf("partial_path\n%s %d \n ", partial_path, j);
 				final_path = ft_strjoin(partial_path, command);
-				printf("final_path\n%s %d \n ", final_path, j);
 				if (!partial_path || !final_path) // si join falla
 				{
 					free(paths);
@@ -56,4 +54,24 @@ char *get_path(char *command, char **environ)
 		i++;
 	}
 	return (NULL);
+}
+
+int loading_new_exec(char *argument, char **environ) // prepararo y cargo un nuevo programa.
+{
+	char **split_arguments; // dividir argumwnt en varios arrays.
+	char *path;				// array con la ruta completa "/bin/cat".
+	int load_new;
+
+	split_arguments = ft_split(argument, ' ');	  // guardo los argumentos separados.
+	path = get_path(split_arguments[0], environ); // paso esos argumentos al path
+	if (path && split_arguments)
+	{
+		load_new = execve(path, split_arguments, environ); // cargo y ejecuto el nuevo programa.
+		free(path);
+		free(split_arguments);
+		return (load_new);
+	}
+	else
+		load_new = -1;
+	return (load_new);
 }

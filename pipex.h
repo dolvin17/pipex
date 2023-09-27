@@ -6,7 +6,7 @@
 /*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:58:50 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/26 20:03:28 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/27 19:52:07 by dolvin17         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ size_t ft_strlen(const char *str);
 char *ft_strnstr(const char *haystack, const char *needle, size_t len);
 char **ft_split(char const *s, char c);
 char *ft_strjoin(char const *str_1, char const *str_2);
+int loading_new_exec(char *argument, char **environ);
 char *get_path(char *command, char **environ);
 #endif
