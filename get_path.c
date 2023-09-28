@@ -6,12 +6,23 @@
 /*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 18:41:16 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/27 20:22:25 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:02:24 by dolvin17         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+extern char **environ;
+
+void check_error(bool if_error, int value, char *str)
+{
+	if (if_error)
+	{
+		errno = value;
+		perror(str);
+		exit(EXIT_FAILURE);
+	}
+}
 char *get_path(char *command, char **environ)
 {
 	char **paths;		// array de arrays con todas las rutas
@@ -74,4 +85,22 @@ int loading_new_exec(char *argument, char **environ) // prepararo y cargo un nue
 	else
 		load_new = -1;
 	return (load_new);
+}
+
+int duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
+{
+	int child;
+
+	child = fork();
+	if (child < 0)
+		printf("fallo al crear el hijo");
+	if (child == 0)
+	{
+		dup2(stdout, STDOUT_FILENO);
+		dup2(stdin, STDIN_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		check_error((loading_new_exec(cmd, environ) != 0), errno, "execve failed");
+	}
+	return (child);
 }

@@ -6,7 +6,7 @@
 /*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 18:11:56 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/26 20:10:35 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:12:39 by dolvin17         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 /* reserva con malloc un nuevo string, basado en la union
 de los dos strings dados como parámetros */
+static size_t ft_strlen(const char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
 
 char *ft_strjoin(char const *str_1, char const *str_2)
 {
