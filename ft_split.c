@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
+/*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 20:39:55 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/10 20:40:44 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:24:27 by ghuertas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 /* reserva con malloc y devuelve un array de strings
 separa s con c como delimitador */
 
-static int ft_count_words(char const *s, char c)
+static	int	ft_count_words(char const *s, char c)
 {
-	int nb;
-	int i;
+	int	nb;
+	int	i;
 
 	nb = 0;
 	i = 0;
@@ -34,11 +34,11 @@ static int ft_count_words(char const *s, char c)
 	return (nb);
 }
 
-static char *ft_place_word(char const *s, char c)
+static	char	*ft_place_word(char const *s, char c)
 {
-	char *word;
-	int i;
-	int len;
+	char	*word;
+	int		i;
+	int		len;
 
 	len = 0;
 	while (s[len] && s[len] != c)
@@ -56,7 +56,7 @@ static char *ft_place_word(char const *s, char c)
 	return (word);
 }
 
-static char *ft_cpy_str(int i, char const *s, char c, char **res)
+static	char	*ft_cpy_str(int i, char const *s, char c, char **res)
 {
 	res[i] = ft_place_word(s, c);
 	if (!res[i])
@@ -72,11 +72,11 @@ static char *ft_cpy_str(int i, char const *s, char c, char **res)
 	return (res[i]);
 }
 
-char **ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	int nb_words;
-	int i;
-	char **res;
+	int		nb_words;
+	int		i;
+	char	**res;
 
 	if (!s)
 		return (NULL);
