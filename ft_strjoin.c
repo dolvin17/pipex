@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
+/*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 18:11:56 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/28 18:12:39 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:27:32 by ghuertas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 /* reserva con malloc un nuevo string, basado en la union
 de los dos strings dados como parámetros */
-static size_t ft_strlen(const char *str)
+static	size_t	ft_strlen(const char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -24,12 +24,12 @@ static size_t ft_strlen(const char *str)
 	return (i);
 }
 
-char *ft_strjoin(char const *str_1, char const *str_2)
+char	*ft_strjoin(char const *str_1, char const *str_2)
 {
-	size_t len;
-	char *sum_str;
-	size_t i;
-	size_t j;
+	size_t	len;
+	char	*sum_str;
+	size_t	i;
+	size_t	j;
 
 	if (!str_1 || !str_2)
 		return (NULL);
