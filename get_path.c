@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
+/*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 18:41:16 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/28 19:02:24 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:37:37 by ghuertas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-extern char **environ;
+extern char	**environ;
 
-void check_error(bool if_error, int value, char *str)
+void	check_error(bool if_error, int value, char *str)
 {
 	if (if_error)
 	{
@@ -23,13 +23,14 @@ void check_error(bool if_error, int value, char *str)
 		exit(EXIT_FAILURE);
 	}
 }
-char *get_path(char *command, char **environ)
+
+char	*get_path(char *command, char **environ)
 {
-	char **paths;		// array de arrays con todas las rutas
-	char *final_path;	// array con la ruta completa "/+command"
-	char *partial_path; // array con la ruta parcial "/"
-	int i;
-	int j;
+	char	**paths;
+	char	*final_path;
+	char	*partial_path;
+	int		i;
+	int		j;
 
 	i = 0;
 	partial_path = NULL;
@@ -44,7 +45,7 @@ char *get_path(char *command, char **environ)
 			{
 				partial_path = ft_strjoin(paths[j], "/");
 				final_path = ft_strjoin(partial_path, command);
-				if (!partial_path || !final_path) // si join falla
+				if (!partial_path || !final_path)
 				{
 					free(paths);
 					free(partial_path);
@@ -67,17 +68,17 @@ char *get_path(char *command, char **environ)
 	return (NULL);
 }
 
-int loading_new_exec(char *argument, char **environ) // prepararo y cargo un nuevo programa.
+int	loading_new_exec(char *argument, char **environ)
 {
-	char **split_arguments; // dividir argumwnt en varios arrays.
-	char *path;				// array con la ruta completa "/bin/cat".
-	int load_new;
+	char	**split_arguments;
+	char	*path;
+	int		load_new;
 
-	split_arguments = ft_split(argument, ' ');	  // guardo los argumentos separados.
-	path = get_path(split_arguments[0], environ); // paso esos argumentos al path
+	split_arguments = ft_split(argument, ' ');
+	path = get_path(split_arguments[0], environ);
 	if (path && split_arguments)
 	{
-		load_new = execve(path, split_arguments, environ); // cargo y ejecuto el nuevo programa.
+		load_new = execve(path, split_arguments, environ);
 		free(path);
 		free(split_arguments);
 		return (load_new);
@@ -87,9 +88,9 @@ int loading_new_exec(char *argument, char **environ) // prepararo y cargo un nue
 	return (load_new);
 }
 
-int duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
+int	duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
 {
-	int child;
+	int	child;
 
 	child = fork();
 	if (child < 0)
@@ -100,7 +101,11 @@ int duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
 		dup2(stdin, STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		check_error((loading_new_exec(cmd, environ) != 0), errno, "execve failed");
+		if (loading_new_exec(cmd, environ) != 0)
+		{
+			perror("error al ejecutar el comando");
+			exit(EXIT_FAILURE);
+		}
 	}
 	return (child);
 }
