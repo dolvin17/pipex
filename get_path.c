@@ -3,18 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
+/*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 18:41:16 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/29 14:23:07 by dolvin17         ###   ########.fr       */
+/*   Updated: 2023/09/29 21:21:01 by ghuertas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-extern char **environ;
+extern char	**environ;
 
-void check_error(bool if_error, int value, char *str)
+void	*ft_free(char **str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+	return (NULL);
+}
+
+void	check_error(bool if_error, int value, char *str)
 {
 	if (if_error)
 	{
@@ -24,55 +38,61 @@ void check_error(bool if_error, int value, char *str)
 	}
 }
 
-char *get_path(char *command, char **environ)
+char	*total_path(char **paths, char *command)
 {
-	char **paths;
-	char *final_path;
-	char *partial_path;
-	int i;
-	int j;
+	char	*final_path;
+	char	*partial_path;
+	int		j;
 
-	i = 0;
+	j = -1;
 	partial_path = NULL;
 	final_path = NULL;
+	while (paths[++j] != NULL)
+	{
+		partial_path = ft_strjoin(paths[j], "/");
+		final_path = ft_strjoin(partial_path, command);
+		if (!partial_path || !final_path)
+		{
+			ft_free(paths);
+			free(partial_path);
+			free(final_path);
+			return (NULL);
+		}
+		if (access(final_path, F_OK | X_OK) == 0)
+		{
+			free(partial_path);
+			return (final_path);
+		}
+	}
+	return (NULL);
+}
+
+char	*get_path(char *command, char **environ)
+{
+	char	**paths;
+	int		i;
+	char	*final_path;
+
+	i = 0;
 	while (command && environ[i])
 	{
 		if (ft_strnstr(environ[i], "PATH=", 5))
 		{
 			paths = ft_split(&environ[i][5], ':');
-			j = 0;
-			while (paths[j] != NULL)
-			{
-				partial_path = ft_strjoin(paths[j], "/");
-				final_path = ft_strjoin(partial_path, command);
-				if (!partial_path || !final_path)
-				{
-					free(paths);
-					free(partial_path);
-					free(final_path);
-					return (NULL);
-				}
-				if (access(final_path, F_OK) == 0)
-				{
-					free(partial_path);
-					return (final_path);
-				}
-				free(partial_path);
-				free(final_path);
-				j++;
-			}
+			final_path = total_path(paths, command);
 			free(paths);
+			return (final_path);
 		}
 		i++;
 	}
 	return (NULL);
 }
 
-int loading_new_exec(char *command, char **environ)
+int	loading_new_exec(char *command, char **environ)
 {
-	char **split_arguments;
-	char *path;
-	int load_new;
+	char	**split_arguments;
+	char	*path;
+	int		load_new;
 
 	split_arguments = ft_split(command, ' ');
 	path = get_path(split_arguments[0], environ);
@@ -86,26 +106,4 @@ int loading_new_exec(char *command, char **environ)
 	else
 		load_new = -1;
 	return (load_new);
-}
-
-pid_t duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
-{
-	pid_t child;
-
-	child = fork();
-	if (child < 0)
-		printf("fallo al crear el hijo");
-	if (child == 0)
-	{
-		dup2(stdout, STDOUT_FILENO);
-		dup2(stdin, STDIN_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		if (loading_new_exec(cmd, environ) != 0)
-		{
-			perror("error al ejecutar el comando");
-			exit(EXIT_FAILURE);
-		}
-	}
-	return (child);
 }
