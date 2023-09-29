@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   get_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dolvin17 <grks_17@hotmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 18:41:16 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/28 19:37:37 by ghuertas         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:23:07 by dolvin17         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-extern char	**environ;
+extern char **environ;
 
-void	check_error(bool if_error, int value, char *str)
+void check_error(bool if_error, int value, char *str)
 {
 	if (if_error)
 	{
@@ -24,13 +24,13 @@ void	check_error(bool if_error, int value, char *str)
 	}
 }
 
-char	*get_path(char *command, char **environ)
+char *get_path(char *command, char **environ)
 {
-	char	**paths;
-	char	*final_path;
-	char	*partial_path;
-	int		i;
-	int		j;
+	char **paths;
+	char *final_path;
+	char *partial_path;
+	int i;
+	int j;
 
 	i = 0;
 	partial_path = NULL;
@@ -68,13 +68,13 @@ char	*get_path(char *command, char **environ)
 	return (NULL);
 }
 
-int	loading_new_exec(char *argument, char **environ)
+int loading_new_exec(char *command, char **environ)
 {
-	char	**split_arguments;
-	char	*path;
-	int		load_new;
+	char **split_arguments;
+	char *path;
+	int load_new;
 
-	split_arguments = ft_split(argument, ' ');
+	split_arguments = ft_split(command, ' ');
 	path = get_path(split_arguments[0], environ);
 	if (path && split_arguments)
 	{
@@ -88,9 +88,9 @@ int	loading_new_exec(char *argument, char **environ)
 	return (load_new);
 }
 
-int	duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
+pid_t duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
 {
-	int	child;
+	pid_t child;
 
 	child = fork();
 	if (child < 0)
