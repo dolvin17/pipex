@@ -6,7 +6,7 @@
 /*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 15:04:40 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/29 21:18:12 by ghuertas         ###   ########.fr       */
+/*   Updated: 2023/10/01 21:08:56 by ghuertas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ pid_t	duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd)
 		dup2(stdin, STDIN_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		if (loading_new_exec(cmd, environ) != 0)
+		if (new_exec(cmd, environ) != 0)
 		{
-			perror("error al ejecutar el comando");
+			perror("command not found");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -42,11 +42,12 @@ int	main(int argc, char *argv[])
 	int	outfile;
 	int	childs[2];
 
-	check_error((argc != 5), EINVAL, "Faltan argumentos");
+	check_error(!environ, EFAULT, "No se ha encontrado el entorno");
+	check_error((argc != 5), EINVAL, "Faltan o sobran argumentos");
 	infile = open(argv[1], O_RDONLY);
-	check_error((infile == -1), EACCES, "No hay permisos de lectura");
+	check_error((infile == -1), ENOENT, "No existe el archivo");
 	outfile = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	check_error((outfile == -1), ENOENT, "No hay permisos de escritura");
+	check_error((outfile == -1), ENOENT, "Archivo de salida corrupto");
 	check_error((pipe(fd) == -1), errno, "Falló la creación de la tubería");
 	childs[0] = duplicate_and_execve(fd, infile, fd[1], argv[2]);
 	childs[1] = duplicate_and_execve(fd, fd[0], outfile, argv[3]);

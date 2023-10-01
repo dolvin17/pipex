@@ -6,7 +6,7 @@
 /*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 17:58:50 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/29 17:51:20 by ghuertas         ###   ########.fr       */
+/*   Updated: 2023/10/01 21:04:52 by ghuertas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		main(int argc, char *argv[]);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char	**ft_split(char const *s, char c);
 char	*ft_strjoin(char const *str_1, char const *str_2);
-int		loading_new_exec(char *argument, char **environ);
+int		new_exec(char *argument, char **environ);
 char	*get_path(char *command, char **environ);
 pid_t	duplicate_and_execve(int fd[2], int stdin, int stdout, char *cmd);
 void	check_error(bool if_error, int value, char *str);

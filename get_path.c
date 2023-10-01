@@ -6,7 +6,7 @@
 /*   By: ghuertas <ghuertas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 18:41:16 by dolvin17          #+#    #+#             */
-/*   Updated: 2023/09/29 21:21:01 by ghuertas         ###   ########.fr       */
+/*   Updated: 2023/10/01 21:05:49 by ghuertas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*get_path(char *command, char **environ)
 	return (NULL);
 }
 
-int	loading_new_exec(char *command, char **environ)
+int	new_exec(char *command, char **environ)
 {
 	char	**split_arguments;
 	char	*path;
